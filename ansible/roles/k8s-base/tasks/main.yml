@@ -1,4 +1,25 @@
 ---
+- name: Create docker directory
+  become: yes
+  file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: 0766
+
+- name: Set Docker Proxies
+  become: yes
+  copy:
+    src: files/docker/{{ item }} 
+    dest: /etc/systemd/system/docker.service.d/{{ item }}
+    owner: ubuntu
+    group: ubuntu
+    mode: 0666
+  with_items:
+    - http-proxy.conf
+    - https-proxy.conf
+    
 - name: Ensure SSH Directories
   become: yes
   file:

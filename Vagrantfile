@@ -2,7 +2,11 @@
 # # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
-
+   if Vagrant.has_plugin?("vagrant-proxyconf")
+    config.proxy.http     = "http://proxy-chain.intel.com:911/"
+    config.proxy.https    = "http://proxy-chain.intel.com:912/"
+    config.proxy.no_proxy = "localhost,127.0.0.1,172.42.42.1,172.42.42.2,172.42.42.3,172.42.42.4,.intel.com"
+   end
   (1..3).each do |i|
     config.vm.define "k8s#{i}" do |s|
       s.ssh.forward_agent = true
